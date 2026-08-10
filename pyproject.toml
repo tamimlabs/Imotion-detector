@@ -43,5 +43,10 @@ all = ["deepface>=0.0.79", "fer>=21.0.1"]
 [project.scripts]
 imotion-detector = "imotion_detector.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/tamimlabs/Imotion-detector"
+Repository = "https://github.com/tamimlabs/Imotion-detector"
+Issues = "https://github.com/tamimlabs/Imotion-detector/issues"
+
 [tool.setuptools.packages.find]
 include = ["imotion_detector*"]

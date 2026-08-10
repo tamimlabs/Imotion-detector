@@ -23,7 +23,7 @@
 └──────────────────────────────────┘
 ```
 
-Made with ❤️ by [Tamim Hasan](https://github.com/shahmdtamimhasan)
+Made with ❤️ by [Tamim Hasan](https://github.com/tamimlabs)
 
 </div>
 
@@ -93,7 +93,7 @@ Choose your engine with the `--engine` flag:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/shahmdtamimhasan/Imotion-detector.git
+git clone https://github.com/tamimlabs/Imotion-detector.git
 cd Imotion-detector
 
 # 2. Create a virtual environment (recommended)
@@ -125,7 +125,7 @@ Follow the [Quick Start](#-quick-start).
 ### Option B — Install as a package
 
 ```bash
-git clone https://github.com/shahmdtamimhasan/Imotion-detector.git
+git clone https://github.com/tamimlabs/Imotion-detector.git
 cd Imotion-detector
 pip install .[deepface]       # DeepFace (default)
 # or
@@ -318,7 +318,7 @@ annotated = pipeline.process(frame)
 | 🔌 `FER is not installed` | Run `pip install -r requirements/fer.txt` |
 | 💾 Out of memory | Use `--engine opencv` or install a CPU-only TensorFlow build |
 
-Still stuck? [Open an issue](https://github.com/shahmdtamimhasan/Imotion-detector/issues/new).
+Still stuck? [Open an issue](https://github.com/tamimlabs/Imotion-detector/issues/new).
 
 ---
 
@@ -341,10 +341,10 @@ Still stuck? [Open an issue](https://github.com/shahmdtamimhasan/Imotion-detecto
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
-1. 🍴 Fork the [repository](https://github.com/shahmdtamimhasan/Imotion-detector)
+1. 🍴 Fork the [repository](https://github.com/tamimlabs/Imotion-detector)
 2. 🌿 Create a feature branch
 3. ✏️ Make your changes
-4. ✅ Open a [pull request](https://github.com/shahmdtamimhasan/Imotion-detector/pulls)
+4. ✅ Open a [pull request](https://github.com/tamimlabs/Imotion-detector/pulls)
 
 ---
 

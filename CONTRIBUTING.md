@@ -18,9 +18,9 @@ Thank you for your interest in contributing! This guide explains how to set up t
 
 This project is hosted on GitHub:
 
-- Repository: <https://github.com/shahmdtamimhasan/Imotion-detector>
-- Issue tracker: <https://github.com/shahmdtamimhasan/Imotion-detector/issues>
-- Pull requests: <https://github.com/shahmdtamimhasan/Imotion-detector/pulls>
+- Repository: <https://github.com/tamimlabs/Imotion-detector>
+- Issue tracker: <https://github.com/tamimlabs/Imotion-detector/issues>
+- Pull requests: <https://github.com/tamimlabs/Imotion-detector/pulls>
 
 You'll need:
 
@@ -42,7 +42,7 @@ You'll need:
 2. **Add the original repo as an upstream remote:**
 
    ```bash
-   git remote add upstream https://github.com/shahmdtamimhasan/Imotion-detector.git
+   git remote add upstream https://github.com/tamimlabs/Imotion-detector.git
    ```
 
 3. **Create and activate a virtual environment:**
