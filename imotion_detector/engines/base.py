@@ -1,6 +1,10 @@
 """Abstract base class shared by every emotion engine."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
+
+import numpy as np
 
 
 class EngineDependencyError(RuntimeError):
@@ -22,5 +26,5 @@ class EmotionEngine(ABC):
     description = ""
 
     @abstractmethod
-    def analyze(self, face_bgr):
+    def analyze(self, face_bgr: np.ndarray) -> str | None:
         """Return the dominant emotion label for a face crop (BGR image)."""

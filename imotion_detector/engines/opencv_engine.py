@@ -2,6 +2,8 @@
 from the official OpenCV Zoo repository (downloaded on first use).
 """
 
+from __future__ import annotations
+
 import logging
 
 import cv2
@@ -27,12 +29,12 @@ class OpenCVEngine(EmotionEngine):
     description = "OpenCV DNN MobileFaceNet model - lightest, only needs opencv-python"
     requirements_file = "requirements/opencv.txt"
 
-    def __init__(self, model_dir=None):
+    def __init__(self, model_dir: str | None = None) -> None:
         model_path = ensure_model_downloaded(MODEL_URL, MODEL_FILENAME, model_dir=model_dir)
         self._net = cv2.dnn.readNetFromONNX(str(model_path))
         logger.debug("Loaded OpenCV emotion model from %s", model_path)
 
-    def analyze(self, face_bgr):
+    def analyze(self, face_bgr: np.ndarray) -> str:
         blob = cv2.dnn.blobFromImage(
             face_bgr,
             scalefactor=2.0 / 255.0,

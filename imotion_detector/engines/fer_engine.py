@@ -1,6 +1,10 @@
 """FER (Facial Expression Recognition) based engine — lightweight."""
 
+from __future__ import annotations
+
 import logging
+
+import numpy as np
 
 from .base import EmotionEngine, EngineDependencyError
 
@@ -17,7 +21,7 @@ class FEREngine(EmotionEngine):
     description = "FER facial-expression library - lightweight, CPU-friendly"
     requirements_file = "requirements/fer.txt"
 
-    def __init__(self, mtcnn=False):
+    def __init__(self, mtcnn: bool = False) -> None:
         try:
             from fer import FER
         except ImportError as exc:
@@ -27,7 +31,7 @@ class FEREngine(EmotionEngine):
         self.mtcnn = mtcnn
         logger.debug("Initialised FER engine (mtcnn=%s)", mtcnn)
 
-    def analyze(self, face_bgr):
+    def analyze(self, face_bgr: np.ndarray) -> str | None:
         results = self._detector.detect_emotions(face_bgr)
         if results:
             emotions = results[0].get("emotions")

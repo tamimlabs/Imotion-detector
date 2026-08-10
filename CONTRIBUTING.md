@@ -6,8 +6,10 @@ Thank you for your interest in contributing! This guide explains how to set up t
 
 - [Getting Started](#getting-started)
 - [Development Setup](#development-setup)
+- [Testing, Linting & Type Checks](#testing-linting--type-checks)
 - [How to Contribute](#how-to-contribute)
 - [Adding a New Engine](#adding-a-new-engine)
+- [Adding a New Face Detector](#adding-a-new-face-detector)
 - [Code Style](#code-style)
 - [Commit Guidelines](#commit-guidelines)
 - [Reporting Issues](#reporting-issues)
@@ -25,7 +27,7 @@ This project is hosted on GitHub:
 You'll need:
 
 - **Git** installed and configured
-- **Python 3.8+**
+- **Python 3.10+**
 - A **GitHub account** (for forks and pull requests)
 
 ---
@@ -63,11 +65,36 @@ You'll need:
    pip install -r requirements/all.txt      # everything
    ```
 
-5. **Verify the app runs:**
+5. **Install the dev tooling** (pytest, ruff, mypy) if you plan to write tests:
+
+   ```bash
+   pip install -r requirements/dev.txt
+   ```
+
+6. **Verify the app runs:**
 
    ```bash
    python main.py --list-engines
    ```
+
+---
+
+## Testing, Linting & Type Checks
+
+Every PR is expected to pass the same checks CI runs:
+
+```bash
+pytest             # run the test suite
+ruff check .       # lint
+mypy imotion_detector main.py tests   # static type checks
+```
+
+Tips:
+
+- Write a test alongside any new behaviour — the suite lives in `tests/`.
+- Tests marked `models` or `network` (which download small ONNX models) are skipped
+  automatically when there is no internet access, so the suite passes anywhere.
+- Run `pytest tests/<file>` to target a single file while iterating.
 
 ---
 
@@ -83,17 +110,10 @@ You'll need:
 
 2. **Make your changes** — keep them focused and small.
 
-3. **Test** with the lightest engine (OpenCV) to keep iteration fast:
+3. **Write a test** covering your change (see [Testing, Linting & Type Checks](#testing-linting--type-checks)).
 
-   ```bash
-   python main.py --engine opencv --source sample.jpg --output out.jpg
-   ```
-
-4. **Verify syntax** of any Python files you changed:
-
-   ```bash
-   python -m py_compile <changed_file.py>
-   ```
+4. **Run the checks** — make sure `pytest`, `ruff check .` and
+   `mypy imotion_detector main.py tests` all pass before submitting.
 
 5. **Commit and push:**
 
@@ -142,13 +162,42 @@ Adding a new emotion backend is deliberately simple:
 
 ---
 
+## Adding a New Face Detector
+
+Face detectors live in [`imotion_detector/detectors.py`](imotion_detector/detectors.py) behind a tiny interface:
+
+1. Create a class that inherits from [`FaceDetector`](imotion_detector/detectors.py):
+
+   ```python
+   class MyFaceDetector(FaceDetector):
+       name = "myface"
+
+       def detect(self, frame):
+           """Return a list of (x, y, width, height) boxes for every face."""
+           # ... your detection logic ...
+           return [(0, 0, 200, 200)]
+   ```
+
+2. **Register it** in the `DETECTORS` dict at the bottom of [`imotion_detector/detectors.py`](imotion_detector/detectors.py) so the CLI's `--face-detector` accepts it automatically.
+
+3. If the detector needs an ONNX/weights file, download it with
+   [`ensure_model_downloaded`](imotion_detector/utils.py) (cached, atomic) instead of committing it.
+
+4. **Add a test** in `tests/test_detectors.py` (mark model-downloading tests with `@pytest.mark.models`).
+
+5. **Update the README** face-detector notes and CLI reference.
+
+---
+
 ## Code Style
 
-- Follow **PEP 8**.
+- Follow **PEP 8** — enforced by **ruff** (`ruff check .`).
+- **Type hints on all function signatures** — enforced by **mypy** (`mypy imotion_detector main.py tests`).
 - No comments unless they explain *why* — the code should be self-documenting.
-- Use **type hints** on function signatures.
 - Keep functions small and single-purpose.
-- Preserve the existing structure: engine logic in `engines/`, CLI/runners in `cli.py`, shared pipeline in `detector.py`.
+- Preserve the existing structure: engine logic in `engines/`, detector backends in `detectors.py`,
+  tracking/annotation pipeline in `detector.py`, CLI/runners in `cli.py`, HTTP server in `server.py`.
+- Add or update tests for any behaviour you change.
 
 ---
 

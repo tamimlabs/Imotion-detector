@@ -1,6 +1,10 @@
 """DeepFace-based emotion engine — highest accuracy."""
 
+from __future__ import annotations
+
 import logging
+
+import numpy as np
 
 from .base import EmotionEngine, EngineDependencyError
 
@@ -29,7 +33,7 @@ class DeepFaceEngine(EmotionEngine):
         "fastmtcnn",
     ]
 
-    def __init__(self, detector_backend="opencv"):
+    def __init__(self, detector_backend: str = "opencv") -> None:
         if detector_backend not in self.BACKENDS:
             raise ValueError(
                 f"Unknown DeepFace detector backend {detector_backend!r}. "
@@ -44,7 +48,7 @@ class DeepFaceEngine(EmotionEngine):
         self.detector_backend = detector_backend
         logger.debug("Initialised DeepFace engine (backend=%s)", detector_backend)
 
-    def analyze(self, face_bgr):
+    def analyze(self, face_bgr: np.ndarray) -> str | None:
         result = self._analyze(
             face_bgr,
             actions=["emotion"],

@@ -1,5 +1,7 @@
 """Shared helpers: model downloading and misc utilities."""
 
+from __future__ import annotations
+
 import logging
 import os
 from pathlib import Path
@@ -10,7 +12,9 @@ logger = logging.getLogger(__name__)
 DEFAULT_MODEL_DIR = Path(__file__).resolve().parent.parent / "models"
 
 
-def ensure_model_downloaded(url, filename, model_dir=None):
+def ensure_model_downloaded(
+    url: str, filename: str, model_dir: str | None = None
+) -> Path:
     """Download a model file on first use and cache it locally.
 
     Returns the path to the (existing or freshly downloaded) model file.
