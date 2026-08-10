@@ -1,319 +1,241 @@
 <div align="center">
 
-# 🎭 Imotion Detector
+# Imotion Detector
 
-**Real-time facial emotion recognition** with three pluggable deep-learning engines — pick the one that fits your hardware and accuracy needs.
+**Real-time facial emotion recognition** with three pluggable engines — pick the one that fits your hardware and accuracy needs.
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/github/license/shahmdtamimhasan/Imotion-detector?style=for-the-badge)](LICENSE)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org/)
-[![Stars](https://img.shields.io/github/stars/shahmdtamimhasan/Imotion-detector?style=for-the-badge)](https://github.com/shahmdtamimhasan/Imotion-detector)
-[![Forks](https://img.shields.io/github/forks/shahmdtamimhasan/Imotion-detector?style=for-the-badge)](https://github.com/shahmdtamimhasan/Imotion-detector)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green?logo=opencv&logoColor=white)](https://opencv.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-```
-┌──────────────────────────────────┐
-│  ┌──────────┐   ┌──────────┐     │
-│  │  Happy   │   │ Neutral  │     │
-│  │  ┌────┐  │   │  ┌────┐  │     │
-│  │  │ 🙂 │  │   │  │ 😐 │  │     │
-│  │  └────┘  │   │  └────┘  │     │
-│  └──────────┘   └──────────┘     │
-│     Imotion Detector              │
-└──────────────────────────────────┘
-```
-
-Made with ❤️ by [Tamim Hasan](https://github.com/shahmdtamimhasan)
+Author: [Tamim Hasan](https://github.com/shahmdtamimhasan)
 
 </div>
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [✨ Features](#-features)
-- [🛠️ Supported Engines](#️-supported-engines)
-- [😊 Supported Emotions](#-supported-emotions)
-- [🚀 Quick Start](#-quick-start)
-- [📦 Installation](#-installation)
-- [💻 Usage](#-usage)
-- [⚙️ CLI Reference](#️-cli-reference)
-- [🧠 How It Works](#-how-it-works)
-- [📂 Project Structure](#-project-structure)
-- [🔧 Customization](#-customization)
-- [🩺 Troubleshooting](#-troubleshooting)
-- [❓ FAQ](#-faq)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [Features](#features)
+- [Supported Engines](#supported-engines)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [CLI Reference](#cli-reference)
+- [How It Works](#how-it-works)
+- [Project Structure](#project-structure)
+- [Use as a Library](#use-as-a-library)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## ✨ Features
+## Features
 
-- **🎥 Real-time webcam detection** with live emotion labels overlaid on each face
-- **🖼️ Image & 🎞️ video file support** — analyse any photo or clip
-- **🔌 3 pluggable engines** — DeepFace, FER, and OpenCV DNN (see [comparison](#️-supported-engines))
-- **👥 Multi-face support** — every face in the frame is tracked individually
-- **⚡ Performance tuned** — configurable frame skipping keeps it responsive even on CPU
-- **🖥️ Headless mode** — process batches on servers with `--no-display`
-- **📁 Save results** — export annotated images or videos with `--output`
-- **📦 Installable** — `pip install` the package or just run it from source
-
----
-
-## 🛠️ Supported Engines
-
-Pick the engine that matches your needs with the `--engine` flag:
-
-| Engine | Accuracy | Speed | Size / Deps | Best for |
-|--------|----------|-------|-------------|----------|
-| [`deepface`](https://github.com/serengil/deepface) ✅ *default* | ⭐⭐⭐ Highest | 🐢 Slower | ~700 MB + [TensorFlow](https://www.tensorflow.org/) | Best accuracy, GPU users |
-| [`fer`](https://github.com/justinshenk/fer) | ⭐⭐ Good | 🐇 Faster | ~400 MB + Keras/TensorFlow | Balanced on CPU |
-| [`opencv`](https://github.com/opencv/opencv_zoo) | ⭐⭐ Good | 🚀 Fastest | ~6 MB model, [OpenCV](https://opencv.org/) only | Lightweight / low-end PCs |
-
-> **OpenCV engine note:** it uses the [OpenCV Zoo MobileFaceNet model](https://github.com/opencv/opencv_zoo/tree/main/models/facial_expression_recognition) which is downloaded automatically on first use (~6 MB).
-
-**Comparison details:**
-
-| Engine | Backend | Emotion labels |
-|--------|---------|----------------|
-| DeepFace | Deep neural network | angry, disgust, fear, happy, sad, surprise, neutral |
-| FER | Keras + OpenCV | angry, disgust, fear, happy, sad, surprise, neutral |
-| OpenCV | MobileFaceNet (ONNX) | angry, disgust, fearful, happy, neutral, sad, surprised |
+- **Real-time webcam detection** — live emotion labels overlaid on each face
+- **Image & video support** — analyse any photo or clip from disk
+- **3 pluggable engines** — DeepFace, FER and OpenCV DNN
+- **Multi-face support** — every face in the frame is tracked individually
+- **Performance tuning** — configurable frame skipping keeps it responsive on CPU
+- **Headless mode** — process files on servers with `--no-display`
+- **Save results** — export annotated images or videos with `--output`
+- **Installable** — run from source or `pip install` the package
 
 ---
 
-## 😊 Supported Emotions
+## Supported Engines
 
-| Emotion | Example |
+Choose an engine with the `--engine` flag:
+
+| Engine | Accuracy | Speed | Dependencies | Best for |
+|--------|----------|-------|--------------|----------|
+| [`deepface`](https://github.com/serengil/deepface) _(default)_ | Highest | Slower | DeepFace + TensorFlow/PyTorch | Maximum accuracy, GPU users |
+| [`fer`](https://github.com/justinshenk/fer) | Good | Faster | FER + Keras/TensorFlow | Balanced performance on CPU |
+| [`opencv`](https://github.com/opencv/opencv_zoo) | Good | Fastest | OpenCV only | Low-end PCs, minimal install |
+
+All three engines recognise the same seven emotions:
+
+| Emotion | Emotion |
 |---------|---------|
-| 😠 Angry | Frowning, tense jaw |
-| 🤢 Disgust | Wrinkled nose, disgusted look |
-| 😨 Fear | Wide eyes, raised brows |
-| 😊 Happy | Smiling, raised cheeks |
-| 😐 Neutral | Calm, relaxed face |
-| 😢 Sad | Downturned mouth, drooping eyes |
-| 😲 Surprise | Wide-open eyes and mouth |
+| Angry | Happy |
+| Disgust | Neutral |
+| Fear | Sad |
+| Surprise | |
+
+> The OpenCV engine uses the [OpenCV Zoo MobileFaceNet model](https://github.com/opencv/opencv_zoo/tree/main/models/facial_expression_recognition) (~6 MB), downloaded automatically on first use. It labels emotions as `fearful` and `surprised`; DeepFace and FER use `fear` and `surprise`.
 
 ---
 
-## 🚀 Quick Start
+## Requirements
+
+- **Python 3.8+**
+- A webcam (for live detection)
+- At least the [base dependencies](requirements/base.txt): `opencv-python` and `numpy`
+
+---
+
+## Installation
 
 ```bash
-# 1. Clone the repo
 git clone https://github.com/shahmdtamimhasan/Imotion-detector.git
 cd Imotion-detector
 
-# 2. Create a virtual environment (recommended)
+# Create and activate a virtual environment (recommended)
 python -m venv .venv
 # Windows:      .venv\Scripts\activate
 # macOS/Linux:  source .venv/bin/activate
-
-# 3. Install dependencies for your chosen engine
-pip install -r requirements/deepface.txt    # highest accuracy (default)
-# or
-pip install -r requirements/fer.txt         # lightweight
-# or
-pip install -r requirements/opencv.txt      # lightest
-
-# 4. Run it! 🎉
-python main.py --engine deepface
 ```
 
-> **First run:** DeepFace and FER download their model weights automatically. The OpenCV engine downloads its model to `models/`. An internet connection is required only on the first run.
-
----
-
-## 📦 Installation
-
-### Option A — Run from source (recommended)
-
-Follow the [Quick Start](#-quick-start) above.
-
-### Option B — Install as a package
-
-```bash
-git clone https://github.com/shahmdtamimhasan/Imotion-detector.git
-cd Imotion-detector
-pip install .                      # installs base + deepface extras
-# or with extra engines:
-pip install .[deepface]            # DeepFace
-pip install .[fer]                 # FER
-pip install .[all]                 # everything
-
-# Now run from anywhere:
-imotion-detector --engine deepface
-```
-
-### Which requirements do I need?
+Install the dependencies for your chosen engine:
 
 | Engine | Command |
 |--------|---------|
 | DeepFace (default) | `pip install -r requirements/deepface.txt` |
 | FER | `pip install -r requirements/fer.txt` |
 | OpenCV | `pip install -r requirements/opencv.txt` |
-| Everything | `pip install -r requirements/all.txt` |
+| All engines | `pip install -r requirements/all.txt` |
 
-> 💡 **DeepFace backend:** DeepFace can run on either [TensorFlow](https://www.tensorflow.org/install) or [PyTorch](https://pytorch.org/). The `deepface.txt` requirements install TensorFlow. For PyTorch, install `torch` instead — see the comments in `requirements/deepface.txt`.
+Or install the package itself:
+
+```bash
+pip install .[deepface]   # or: pip install .[fer]  |  pip install .[all]
+imotion-detector --engine deepface
+```
+
+> **Note:** DeepFace works with either [TensorFlow](https://www.tensorflow.org/install) or [PyTorch](https://pytorch.org/). The `deepface.txt` file installs TensorFlow — swap it for `torch` if you prefer (see the comments in the file).
+>
+> **First run:** model weights download automatically. An internet connection is needed only on the first run.
 
 ---
 
-## 💻 Usage
+## Usage
 
-### Detect emotions live from your webcam
+### Live webcam detection
 
 ```bash
 python main.py
 ```
 
-You can also be explicit:
-
-```bash
-python main.py --engine deepface --source 0
-```
-
-### Analyse a single image
+### Analyse an image
 
 ```bash
 python main.py --engine fer --source photo.jpg --output result.jpg
 ```
 
-### Analyse a video file
+### Analyse a video
 
 ```bash
 python main.py --engine opencv --source clip.mp4 --output annotated.mp4
 ```
 
-### Headless mode (servers / batch processing)
-
-No display window is opened — results are still saved to `--output`:
+### Headless batch processing (no display window)
 
 ```bash
 python main.py --engine deepface --source clip.mp4 --output out.mp4 --no-display
 ```
 
-### List all available engines
+### List the available engines
 
 ```bash
 python main.py --list-engines
 ```
 
-### Keyboard controls
-
-| Key | Action |
-|-----|--------|
-| `q` | Quit the application |
-| `Ctrl + C` | Force exit from the terminal |
+**Controls:** press `q` in the video window to quit, or `Ctrl + C` in the terminal.
 
 ---
 
-## ⚙️ CLI Reference
+## CLI Reference
 
-Run `python main.py --help` for the full list. Here's the summary:
+Run `python main.py --help` for the complete list.
 
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--engine {deepface,fer,opencv}` | `deepface` | Emotion analysis engine |
-| `--source PATH` | webcam | Camera index, image, or video path |
-| `--camera N` | `0` | Webcam index (when `--source` is not given) |
-| `--output PATH` | `None` | Save the annotated result |
-| `--frame-skip N` | `10` | Analyse emotions every N frames |
-| `--min-face-size N` | `100` | Minimum face size for detection (px) |
-| `--detector-backend BACKEND` | `opencv` | DeepFace face-detector backend |
-| `--model-dir PATH` | `models/` | Where to cache the OpenCV model |
-| `--no-display` | off | Run without a display window |
+| `--source PATH` | webcam | Camera index, image path, or video path |
+| `--camera N` | `0` | Webcam index (used when `--source` is not given) |
+| `--output PATH` | — | Save the annotated result to this file |
+| `--frame-skip N` | `10` | Run emotion analysis every N frames |
+| `--min-face-size N` | `100` | Minimum face width/height (px) for detection |
+| `--detector-backend NAME` | `opencv` | DeepFace face-detector backend |
+| `--model-dir PATH` | `models/` | Directory for the auto-downloaded OpenCV model |
+| `--no-display` | off | Run without a display window (headless) |
 | `--list-engines` | off | Print available engines and exit |
 | `--verbose` | off | Debug-level logging |
-| `--version` | — | Show version |
+| `--version` | — | Show the installed version |
 
-**Examples:**
+Examples:
 
 ```bash
-# Use a better DeepFace face detector
-python main.py --engine deepface --detector-backend mtcnn
-
-# Trade accuracy for speed on a low-end machine
-python main.py --engine opencv --frame-skip 5 --min-face-size 80
-
-# Use a secondary webcam
-python main.py --camera 1
+python main.py --engine deepface --detector-backend mtcnn   # stronger face detector
+python main.py --engine opencv --frame-skip 5               # faster on low-end PCs
+python main.py --camera 1                                   # use a second webcam
 ```
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 ```
-Webcam / Video / Image
+Frame (webcam / image / video)
         │
         ▼
-┌─────────────────────┐
-│  Frame (BGR)        │
-└─────────┬───────────┘
-          ▼
-   Convert to grayscale
-          │
-          ▼
-┌──────────────────────────────┐
-│  Face detection (Haar)       │
-│  cv2.CascadeClassifier       │
-└─────────┬────────────────────┘
-          ▼
-┌──────────────────────────────┐
-│  Every N frames:             │
-│  Emotion analysis per face   │
-│  (DeepFace / FER / OpenCV)   │
-└─────────┬────────────────────┘
-          ▼
-  Draw boxes + labels
-          │
-          ▼
-   Display / Save output
+Convert to grayscale
+        │
+        ▼
+Face detection (OpenCV Haar cascade)
+        │
+        ▼
+Every N frames: emotion analysis per face
+   (DeepFace / FER / OpenCV engine)
+        │
+        ▼
+Draw bounding boxes + labels
+        │
+        ▼
+Display and/or save
 ```
 
-1. **Face detection** — [OpenCV's Haar cascade](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html) finds faces in the grayscale frame.
-2. **Emotion analysis** — each face crop is passed to your chosen engine, which predicts one of the [7 emotions](#-supported-emotions).
-3. **Frame skipping** — analysis runs every `N` frames (default `10`) so the app stays responsive; the last prediction is kept and displayed in between.
-4. **Annotation** — green bounding boxes and emotion labels are drawn over the frame.
+1. **Face detection** — [OpenCV's Haar cascade](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html) locates faces in the grayscale frame.
+2. **Emotion analysis** — each face crop is passed to the selected engine, which predicts one of the seven emotions.
+3. **Frame skipping** — analysis runs every `N` frames (default `10`) so the app stays responsive; the last prediction is kept and shown between runs.
+4. **Annotation** — green bounding boxes and emotion labels are drawn on the frame.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Imotion-detector/
-├── main.py                     # 🚪 CLI entry point
-├── imotion_detector/           # 📦 Core package
+├── main.py                    # CLI entry point
+├── imotion_detector/          # Core package
 │   ├── __init__.py
-│   ├── __main__.py             # python -m imotion_detector
-│   ├── cli.py                  # Argument parsing & runners
-│   ├── detector.py             # Face detection + annotation pipeline
-│   ├── utils.py                # Model download helper
-│   └── engines/                # 🔌 Pluggable emotion engines
-│       ├── base.py             # Abstract EmotionEngine interface
-│       ├── deepface_engine.py  # DeepFace backend
-│       ├── fer_engine.py       # FER backend
-│       └── opencv_engine.py    # OpenCV DNN backend
-├── requirements/               # Per-engine dependency files
+│   ├── __main__.py            # python -m imotion_detector
+│   ├── cli.py                 # Argument parsing and source runners
+│   ├── detector.py            # Face detection + annotation pipeline
+│   ├── utils.py               # Model download helper
+│   └── engines/               # Pluggable emotion engines
+│       ├── base.py            # Abstract EmotionEngine interface
+│       ├── deepface_engine.py # DeepFace backend
+│       ├── fer_engine.py      # FER backend
+│       └── opencv_engine.py   # OpenCV DNN backend
+├── requirements/              # Per-engine dependency files
 │   ├── base.txt
 │   ├── deepface.txt
 │   ├── fer.txt
 │   ├── opencv.txt
 │   └── all.txt
-├── pyproject.toml              # Packaging config
-├── models/                     # Auto-downloaded models (gitignored)
-├── .gitignore
-├── .gitattributes
-├── LICENSE                     # MIT License
+├── pyproject.toml             # Package metadata and build config
+├── models/                    # Auto-downloaded models (gitignored)
+├── AGENTS.md                  # Guidelines for AI-assisted contributors
+├── CONTRIBUTING.md            # Guidelines for contributors
+├── LICENSE                    # MIT License
 └── README.md
 ```
 
-> 🧩 **Adding your own engine:** implement [`EmotionEngine`](imotion_detector/engines/base.py) (just the `analyze(face_bgr)` method) and register it in [`engines/__init__.py`](imotion_detector/engines/__init__.py). That's it!
-
 ---
 
-## 🔧 Customization
-
-All knobs are available on the CLI, but you can also use the package in your own Python code:
+## Use as a Library
 
 ```python
 import cv2
@@ -323,7 +245,7 @@ from imotion_detector.engines import FEREngine
 pipeline = FaceEmotionPipeline(
     engine=FEREngine(),
     frame_skip=5,          # analyse every 5 frames
-    min_face_size=80,      # smaller faces allowed
+    min_face_size=80,      # accept smaller faces
     scale_factor=1.1,      # cascade scale factor
 )
 
@@ -333,76 +255,47 @@ annotated = pipeline.process(frame)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `engine` | required | `DeepFaceEngine()`, `FEREngine()`, `OpenCVEngine()` |
+| `engine` | required | `DeepFaceEngine()`, `FEREngine()` or `OpenCVEngine()` |
 | `frame_skip` | `10` | Analyse every N frames (higher = faster) |
 | `min_face_size` | `100` | Minimum face size (px) |
-| `scale_factor` | `1.1` | Cascade detection scale |
-| `min_neighbors` | `5` | Cascade detection neighbors |
-| `pad_ratio` | `0.2` | Context padding around crops (helps accuracy) |
+| `scale_factor` | `1.1` | Cascade detection scale factor |
+| `min_neighbors` | `5` | Cascade detection neighbours |
+| `pad_ratio` | `0.2` | Context padding around face crops (helps accuracy) |
+
+To add a new engine, implement [`EmotionEngine`](imotion_detector/engines/base.py) (a single `analyze(face_bgr)` method) and register it in [`engines/__init__.py`](imotion_detector/engines/__init__.py).
 
 ---
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| ❌ `Webcam not opening` | Close other apps using the camera, or try `--camera 1` |
-| ❌ `No faces detected` | Improve lighting, face the camera, lower `--min-face-size` |
-| 🐢 `Slow performance` | Use `--engine opencv` or raise `--frame-skip` |
-| 📥 `Model download fails` | Check your internet connection and retry (first run only) |
-| 🔌 `DeepFace is not installed` | Run `pip install -r requirements/deepface.txt` |
-| 🔌 `FER is not installed` | Run `pip install -r requirements/fer.txt` |
-| 💾 `Out of memory` | Install `tensorflow-cpu` or use `--engine opencv` |
-| 🪟 `cv2.waitKey` error on Linux | Install `opencv-python`'s GUI-capable build (`pip install opencv-python`) |
+| Webcam not opening | Close other apps using the camera, or try `--camera 1` |
+| No faces detected | Improve lighting, face the camera, lower `--min-face-size` |
+| Slow performance | Use `--engine opencv` or raise `--frame-skip` |
+| Model download fails | Check your internet connection and retry (first run only) |
+| `DeepFace is not installed` | Run `pip install -r requirements/deepface.txt` |
+| `FER is not installed` | Run `pip install -r requirements/fer.txt` |
+| Out of memory | Use `--engine opencv`, or install a CPU-only TensorFlow build |
 
 Still stuck? [Open an issue](https://github.com/shahmdtamimhasan/Imotion-detector/issues/new).
 
 ---
 
-## ❓ FAQ
+## Contributing
 
-**Which engine should I use?**
-- For **maximum accuracy**: DeepFace
-- For **balanced speed on CPU**: FER
-- For **low-end PCs / minimal dependencies**: OpenCV
-
-**Do I need a GPU?** No. All engines run on CPU, though DeepFace benefits most from a GPU.
-
-**Are models included in the repo?** No. Models download automatically on first run (this keeps the repo small).
-
-**Does it work on multiple faces?** Yes — all faces in the frame are detected and tracked.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ---
 
-## 🤝 Contributing
+## License
 
-Contributions are welcome! 🎉
-
-1. 🍴 Fork the [repository](https://github.com/shahmdtamimhasan/Imotion-detector)
-2. 🌿 Create a feature branch
-3. ✏️ Make your changes
-4. ✅ Open a [pull request](https://github.com/shahmdtamimhasan/Imotion-detector/pulls)
-
-Ideas: more engines, better face tracking, confidence scores, emotion history graphs, GUI support...
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
+Distributed under the **MIT License**. See [LICENSE](LICENSE).
 
 ---
 
 <div align="center">
 
-### 🙌 Built with
-
-[![OpenCV](https://img.shields.io/badge/OpenCV-grey?logo=opencv)](https://opencv.org/) [![DeepFace](https://img.shields.io/badge/DeepFace-grey?logo=python)](https://github.com/serengil/deepface) [![FER](https://img.shields.io/badge/FER-grey?logo=python)](https://github.com/justinshenk/fer)
-
-#### 👤 Author: [Tamim Hasan](https://github.com/shahmdtamimhasan)
-
-[![GitHub](https://img.shields.io/badge/GitHub-shahmdtamimhasan-blue?logo=github)](https://github.com/shahmdtamimhasan) [![Issues](https://img.shields.io/github/issues/shahmdtamimhasan/Imotion-detector?color=red)](https://github.com/shahmdtamimhasan/Imotion-detector/issues)
-
-⭐ If you find this project useful, please give it a star!
+Made with ❤️ by [Tamim Hasan](https://github.com/shahmdtamimhasan) using [OpenCV](https://opencv.org/), [DeepFace](https://github.com/serengil/deepface) and [FER](https://github.com/justinshenk/fer).
 
 </div>
