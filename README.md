@@ -16,10 +16,10 @@
 │  ┌──────────┐   ┌──────────┐     │
 │  │  Happy   │   │ Neutral  │     │
 │  │  ┌────┐  │   │  ┌────┐  │     │
-│  │  │ 🙂 │  │   │  │ 😐 │  │     │
+│  │  │ 🙂 │  │   │  │ 😐│  │     │
 │  │  └────┘  │   │  └────┘  │     │
 │  └──────────┘   └──────────┘     │
-│     Imotion Detector              │
+│     Imotion Detector             │
 └──────────────────────────────────┘
 ```
 
@@ -31,20 +31,20 @@ Made with ❤️ by [Tamim Hasan](https://github.com/tamimlabs)
 
 ## 📖 Table of Contents
 
-- [✨ Features](#-features)
-- [🛠️ Supported Engines](#️-supported-engines)
-- [😊 Supported Emotions](#-supported-emotions)
-- [🚀 Quick Start](#-quick-start)
-- [📦 Installation](#-installation)
-- [💻 Usage](#-usage)
-- [⚙️ CLI Reference](#️-cli-reference)
-- [🧠 How It Works](#-how-it-works)
-- [📂 Project Structure](#-project-structure)
-- [🔧 Customization](#-customization)
-- [🩺 Troubleshooting](#-troubleshooting)
-- [❓ FAQ](#-faq)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [✨ Features](#features)
+- [🛠️ Supported Engines](#supported-engines)
+- [😊 Supported Emotions](#supported-emotions)
+- [🚀 Quick Start](#quick-start)
+- [📦 Installation](#installation)
+- [💻 Usage](#usage)
+- [⚙️ CLI Reference](#cli-reference)
+- [🧠 How It Works](#how-it-works)
+- [📂 Project Structure](#project-structure)
+- [🔧 Customization](#customization)
+- [🩺 Troubleshooting](#troubleshooting)
+- [❓ FAQ](#faq)
+- [🤝 Contributing](#contributing)
+- [📄 License](#license)
 
 ---
 
@@ -120,7 +120,7 @@ python main.py --engine deepface
 
 ### Option A — Run from source (recommended)
 
-Follow the [Quick Start](#-quick-start).
+Follow the [Quick Start](#quick-start).
 
 ### Option B — Install as a package
 
@@ -236,7 +236,7 @@ Display and/or save
 ```
 
 1. **Face detection** — [OpenCV's Haar cascade](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html) locates faces in the grayscale frame.
-2. **Emotion analysis** — each face crop goes to the selected engine, which predicts one of the [7 emotions](#-supported-emotions).
+2. **Emotion analysis** — each face crop goes to the selected engine, which predicts one of the [7 emotions](#supported-emotions).
 3. **Frame skipping** — analysis runs every `N` frames (default `10`), keeping the app responsive; the last prediction is displayed in between.
 4. **Annotation** — green bounding boxes and emotion labels are drawn on the frame.
 
