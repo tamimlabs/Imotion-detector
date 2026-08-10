@@ -5,6 +5,7 @@ from the official OpenCV Zoo repository (downloaded on first use).
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import cv2
 import numpy as np
@@ -34,7 +35,7 @@ class OpenCVEngine(EmotionEngine):
         self._net = cv2.dnn.readNetFromONNX(str(model_path))
         logger.debug("Loaded OpenCV emotion model from %s", model_path)
 
-    def analyze(self, face_bgr: np.ndarray) -> str:
+    def analyze(self, face_bgr: np.ndarray[Any, np.dtype[Any]]) -> str:
         blob = cv2.dnn.blobFromImage(
             face_bgr,
             scalefactor=2.0 / 255.0,

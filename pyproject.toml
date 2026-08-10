@@ -35,8 +35,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Image Processing",
 ]
 dependencies = [
-    "opencv-python>=4.5",
-    "numpy>=1.21",
+    "opencv-python>=4.5.4,<5",
+    "numpy>=1.21,<2.5",
 ]
 
 [project.optional-dependencies]
@@ -56,7 +56,7 @@ Issues = "https://github.com/tamimlabs/Imotion-detector/issues"
 include = ["imotion_detector*"]
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py310"
 line-length = 100
 exclude = [".venv", ".git", "models", "__pycache__", "build", "dist"]
 

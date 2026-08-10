@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 import numpy as np
 
@@ -26,5 +27,5 @@ class EmotionEngine(ABC):
     description = ""
 
     @abstractmethod
-    def analyze(self, face_bgr: np.ndarray) -> str | None:
+    def analyze(self, face_bgr: np.ndarray[Any, np.dtype[Any]]) -> str | None:
         """Return the dominant emotion label for a face crop (BGR image)."""

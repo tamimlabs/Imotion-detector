@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import numpy as np
 
@@ -31,7 +32,7 @@ class FEREngine(EmotionEngine):
         self.mtcnn = mtcnn
         logger.debug("Initialised FER engine (mtcnn=%s)", mtcnn)
 
-    def analyze(self, face_bgr: np.ndarray) -> str | None:
+    def analyze(self, face_bgr: np.ndarray[Any, np.dtype[Any]]) -> str | None:
         results = self._detector.detect_emotions(face_bgr)
         if results:
             emotions = results[0].get("emotions")

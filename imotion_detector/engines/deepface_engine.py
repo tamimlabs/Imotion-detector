@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import numpy as np
 
@@ -48,7 +49,7 @@ class DeepFaceEngine(EmotionEngine):
         self.detector_backend = detector_backend
         logger.debug("Initialised DeepFace engine (backend=%s)", detector_backend)
 
-    def analyze(self, face_bgr: np.ndarray) -> str | None:
+    def analyze(self, face_bgr: np.ndarray[Any, np.dtype[Any]]) -> str | None:
         result = self._analyze(
             face_bgr,
             actions=["emotion"],

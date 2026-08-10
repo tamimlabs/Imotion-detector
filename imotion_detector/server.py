@@ -11,9 +11,10 @@ import json
 import logging
 import threading
 from collections import deque
+from collections.abc import Callable
 from contextlib import suppress
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any, Callable, cast
+from typing import Any, cast
 
 import cv2
 import numpy as np
@@ -127,7 +128,7 @@ class EmotionStreamServer(ThreadingHTTPServer):
         host: str,
         port: int,
         pipeline: FaceEmotionPipeline,
-        read_frame: Callable[[], np.ndarray | None],
+        read_frame: Callable[[], np.ndarray[Any, np.dtype[Any]] | None],
         jpeg_quality: int = 80,
         max_frames: int = 300,
     ) -> None:

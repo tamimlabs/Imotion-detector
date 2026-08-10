@@ -76,7 +76,9 @@ class FaceEmotionPipeline:
     # ------------------------------------------------------------------ #
     # Emotion analysis                                                    #
     # ------------------------------------------------------------------ #
-    def _crop_face(self, frame: np.ndarray, box: FaceBox) -> np.ndarray:
+    def _crop_face(
+        self, frame: np.ndarray[Any, np.dtype[Any]], box: FaceBox
+    ) -> np.ndarray[Any, np.dtype[Any]]:
         """Extract and lightly pad a face crop for the emotion engine."""
         x, y, w, h = (int(v) for v in box)
         x, y = max(0, x), max(0, y)
@@ -88,7 +90,7 @@ class FaceEmotionPipeline:
             crop = cv2.copyMakeBorder(crop, py, py, px, px, cv2.BORDER_REPLICATE)
         return np.asarray(crop)
 
-    def analyze(self, frame: np.ndarray, box: FaceBox) -> str:
+    def analyze(self, frame: np.ndarray[Any, np.dtype[Any]], box: FaceBox) -> str:
         """Run the engine on a single face box and return its emotion label."""
         try:
             emotion = self.engine.analyze(self._crop_face(frame, box))
@@ -141,7 +143,7 @@ class FaceEmotionPipeline:
     # ------------------------------------------------------------------ #
     # Annotation                                                          #
     # ------------------------------------------------------------------ #
-    def _annotate(self, frame: np.ndarray, tracks: list[_Track]) -> None:
+    def _annotate(self, frame: np.ndarray[Any, np.dtype[Any]], tracks: list[_Track]) -> None:
         for track in tracks:
             x, y, w, h = track.box
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -158,7 +160,7 @@ class FaceEmotionPipeline:
     # ------------------------------------------------------------------ #
     # Per-frame processing                                                #
     # ------------------------------------------------------------------ #
-    def process(self, frame: np.ndarray) -> np.ndarray:
+    def process(self, frame: np.ndarray[Any, np.dtype[Any]]) -> np.ndarray[Any, np.dtype[Any]]:
         """Track faces, refresh emotions every ``frame_skip`` frames and
         annotate the frame in place. Returns the annotated frame.
         """
