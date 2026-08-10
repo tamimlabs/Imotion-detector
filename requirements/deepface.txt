@@ -1,0 +1,8 @@
+# DeepFace engine — highest accuracy, heavier (pulls TensorFlow).
+-r base.txt
+deepface>=0.0.79
+
+# DeepFace >= 0.0.79 can use either TensorFlow or PyTorch as its backend.
+# Uncomment the one you prefer (do not install both):
+tensorflow>=2.14
+# torch>=2.0

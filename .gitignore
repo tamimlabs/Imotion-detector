@@ -1,0 +1,27 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Downloaded model weights (regenerated automatically)
+models/
+
+# Logs
+*.log
+
+# IDE / OS files
+.idea/
+.DS_Store
+Thumbs.db
+
+# Notebooks / scratch
+.ipynb_checkpoints/
+scratch/

@@ -1,0 +1,3 @@
+# FER engine — lightweight, CPU-friendly.
+-r base.txt
+fer>=21.0.1

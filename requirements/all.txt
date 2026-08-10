@@ -1,0 +1,4 @@
+# Everything: base + DeepFace + FER.
+-r base.txt
+deepface>=0.0.79
+fer>=21.0.1

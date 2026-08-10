@@ -1,0 +1,2 @@
+# OpenCV DNN engine — lightest option. The model downloads automatically on first use.
+-r base.txt
