@@ -1,3 +1,8 @@
 # YuNet face detection (FaceDetectorYN) requires OpenCV >= 4.5.4.
-opencv-python>=4.5.4
-numpy>=1.21
+# OpenCV 5.x removed the Haar cascade (cv2.CascadeClassifier), so the haar
+# detector keeps us on the 4.x line.
+opencv-python>=4.5.4,<5
+
+# numpy 2.5's type stubs use Python 3.12+ syntax, which breaks mypy on the
+# supported 3.10/3.11 floor (python_version=3.10). Keep stubs compatible.
+numpy>=1.21,<2.5
