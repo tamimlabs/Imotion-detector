@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import importlib.util
+import sys
 
 import numpy as np
 import pytest
@@ -29,17 +29,15 @@ class TestDeepFaceEngine:
         with pytest.raises(ValueError):
             DeepFaceEngine(detector_backend="does-not-exist")
 
-    def test_missing_dependency_raises_engine_dependency_error(self):
-        if importlib.util.find_spec("deepface") is not None:
-            pytest.skip("deepface is installed; cannot test the missing case")
+    def test_missing_dependency_raises_engine_dependency_error(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "deepface", None)
         with pytest.raises(EngineDependencyError):
             DeepFaceEngine()
 
 
 class TestFEREngine:
-    def test_missing_dependency_raises_engine_dependency_error(self):
-        if importlib.util.find_spec("fer") is not None:
-            pytest.skip("fer is installed; cannot test the missing case")
+    def test_missing_dependency_raises_engine_dependency_error(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "fer", None)
         with pytest.raises(EngineDependencyError):
             FEREngine()
 
