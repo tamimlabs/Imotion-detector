@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.svg" alt="Imotion Detector" width="500">
+# 🎭 Imotion Detector
 
 **Real-time facial emotion recognition** — pick the engine that fits your hardware and accuracy needs.
 
@@ -247,8 +247,6 @@ Display and/or save
 ```
 Imotion-detector/
 ├── main.py                    # 🚪 CLI entry point
-├── assets/
-│   └── logo.svg               # 🎨 Project logo
 ├── imotion_detector/          # 📦 Core package
 │   ├── __init__.py
 │   ├── __main__.py            # python -m imotion_detector
