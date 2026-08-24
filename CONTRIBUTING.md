@@ -77,6 +77,19 @@ You'll need:
    python main.py --list-engines
    ```
 
+### Dependency version pins
+
+`requirements/base.txt` pins `opencv-python>=4.5.4,<5` and `numpy>=1.21,<2.5`. These are
+deliberate, not stale:
+
+- **OpenCV 5.x** removed `cv2.CascadeClassifier`, which breaks the Haar face detector.
+- **numpy 2.5+** type stubs use Python 3.12-only syntax, which fails `mypy` on the supported
+  Python 3.10/3.11 floor (`python_version = "3.10"` in `pyproject.toml`).
+
+If you change these pins, update `[project.dependencies]` in `pyproject.toml` too, and make
+sure CI still passes on **all** matrix entries (Linux + Windows × Python 3.10 / 3.11 / 3.13) —
+the oldest Python in the matrix resolves different dependency versions than the newest.
+
 ---
 
 ## Testing, Linting & Type Checks

@@ -5,7 +5,7 @@
 **Real-time facial emotion recognition** — pick the engine that fits your hardware and accuracy needs.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.5.4%2B-green?logo=opencv&logoColor=white)](https://opencv.org/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green?logo=opencv&logoColor=white)](https://opencv.org/)
 [![CI](https://github.com/tamimlabs/Imotion-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/tamimlabs/Imotion-detector/actions)
 [![DeepFace](https://img.shields.io/badge/DeepFace-powered-orange?logo=python&logoColor=white)](https://github.com/serengil/deepface)
 [![FER](https://img.shields.io/badge/FER-supported-yellow?logo=python&logoColor=white)](https://github.com/justinshenk/fer)
@@ -124,6 +124,11 @@ python main.py --engine deepface
 >
 > 💻 **Low-end PC?** Use the lightest combo — no model downloads, no big ML libraries:
 > `python main.py --engine opencv --face-detector haar`
+
+> ⚠️ **Version compatibility:** Python **3.10 – 3.13**, `opencv-python` **4.x** and `numpy` **< 2.5**.
+> OpenCV 5 removed the Haar cascade (`cv2.CascadeClassifier`), and numpy 2.5's type stubs
+> require Python ≥ 3.12 — both are pinned in [`requirements/base.txt`](requirements/base.txt).
+> See [Troubleshooting](#troubleshooting) if you hit either.
 
 ---
 
@@ -431,6 +436,8 @@ pipeline.snapshot()  # [{"id": 0, "box": [142, 98, 210, 210], "emotion": "happy"
 | 🔀 Labels flicker between faces | Lower `--iou-threshold` so faces keep their identity, or raise `--frame-skip` |
 | 🌐 `--serve` shows no stream | Check `--host` is reachable; use `--host 0.0.0.0` for LAN access |
 | 💾 Out of memory | Use `--engine opencv` or install a CPU-only TensorFlow build |
+| ❌ `module 'cv2' has no attribute 'CascadeClassifier'` | OpenCV 5.x is installed, but the Haar detector needs 4.x: `pip install "opencv-python>=4.5.4,<5"` |
+| 🧪 mypy fails with `Type statement is only supported in Python 3.12 and greater` | numpy 2.5+ ships Python-3.12-only type stubs; pin `numpy<2.5` (already pinned in [`requirements/base.txt`](requirements/base.txt)) |
 
 Still stuck? [Open an issue](https://github.com/tamimlabs/Imotion-detector/issues/new).
 
