@@ -484,6 +484,6 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE).
 
 Made with ❤️ using [OpenCV](https://opencv.org/), [DeepFace](https://github.com/serengil/deepface) & [FER](https://github.com/justinshenk/fer)
 
-⭐ If you find this project useful, please give it a star! and support me
+⭐ If you find this project useful, please give it a star!
 
 </div>
