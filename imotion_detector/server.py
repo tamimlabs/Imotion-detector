@@ -168,6 +168,8 @@ class EmotionStreamServer(ThreadingHTTPServer):
         try:
             with suppress(OSError):  # socket closed by stop()
                 self.serve_forever()
+        except Exception:
+            logger.exception("HTTP server error")
         finally:
             self._serving.set()
 
@@ -183,6 +185,7 @@ class EmotionStreamServer(ThreadingHTTPServer):
             self.server_close()
         if self._http_thread is not None:
             self._http_thread.join(timeout=2)
+        self._serving.set()  # unblock serve() if the HTTP thread did not exit cleanly
 
     # ------------------------------------------------------------------ #
     # Capture loop                                                        #
