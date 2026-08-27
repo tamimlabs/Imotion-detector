@@ -84,6 +84,8 @@ class FaceEmotionPipeline:
         x, y = max(0, x), max(0, y)
         w = min(w, frame.shape[1] - x)
         h = min(h, frame.shape[0] - y)
+        if w <= 0 or h <= 0:
+            return np.zeros((1, 1, 3), dtype=np.uint8)
         crop = frame[y : y + h, x : x + w]
         if self.pad_ratio > 0 and crop.size:
             px, py = int(w * self.pad_ratio), int(h * self.pad_ratio)
