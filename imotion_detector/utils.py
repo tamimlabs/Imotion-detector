@@ -30,12 +30,12 @@ def ensure_model_downloaded(
     logger.info("Downloading %s ...", filename)
     temp_path = directory / (filename + ".part")
     try:
-        urlretrieve(url, temp_path)
-        os.replace(temp_path, model_path)
+            urlretrieve(url, temp_path)
+            os.replace(temp_path, model_path)
     except Exception as exc:
-        if temp_path.exists():
-            temp_path.unlink(missing_ok=True)
-        raise RuntimeError(f"Failed to download model {filename}: {exc}") from exc
+                if temp_path.exists():
+                    temp_path.unlink(missing_ok=True)
+                raise RuntimeError(f"Failed to download model {filename}: {exc}") from exc
 
     logger.info("Model downloaded to %s", model_path)
     return model_path
