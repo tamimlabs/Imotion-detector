@@ -188,23 +188,27 @@ class EmotionStreamServer(ThreadingHTTPServer):
     # Capture loop                                                        #
     # ------------------------------------------------------------------ #
     def _capture_loop(self) -> None:
-        while not self._stop.is_set():
-            frame = self.read_frame()
-            if frame is None:
-                break
-            self.pipeline.process(frame)
-            ok, buf = cv2.imencode(
-                ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality]
-            )
-            if not ok:
-                continue
+        try:
+            while not self._stop.is_set():
+                frame = self.read_frame()
+                if frame is None:
+                    break
+                self.pipeline.process(frame)
+                ok, buf = cv2.imencode(
+                    ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality]
+                )
+                if not ok:
+                    continue
+                with self._cond:
+                    self._frame_seq += 1
+                    self._frames.append((self._frame_seq, buf.tobytes()))
+                    self._cond.notify_all()
+        except Exception:
+            logger.exception("Capture thread crashed")
+        finally:
             with self._cond:
-                self._frame_seq += 1
-                self._frames.append((self._frame_seq, buf.tobytes()))
+                self._frames.append((self._frame_seq + 1, _EOF))
                 self._cond.notify_all()
-        with self._cond:
-            self._frames.append((self._frame_seq + 1, _EOF))
-            self._cond.notify_all()
 
     # ------------------------------------------------------------------ #
     # Shared state for handlers                                           #
