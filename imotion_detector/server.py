@@ -62,6 +62,10 @@ class _StreamingHandler(BaseHTTPRequestHandler):
             self._serve_mjpeg()
         elif self.path == "/api/emotions":
             self._serve_emotions()
+        elif self.path == "/api/joke":
+            self._serve_joke()
+        elif self.path == "/ping":
+            self._serve_ping()
         else:
             self.send_error(404, "Not Found")
 
@@ -85,6 +89,29 @@ class _StreamingHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_joke(self) -> None:
+        import random
+        jokes = [
+            "Why do programmers prefer dark mode? Because light attracts bugs!",
+            "Why do Java developers wear glasses? Because they can't C#!",
+            "What's a programmer's favorite hangout place? Foo Bar!",
+            "Why did the programmer quit his job? Because he didn't get arrays!",
+        ]
+        body = json.dumps({"joke": random.choice(jokes)}).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_ping(self) -> None:
+        body = b"pong"
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
 
