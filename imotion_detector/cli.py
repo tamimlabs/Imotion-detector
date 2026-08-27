@@ -320,6 +320,8 @@ def run_benchmark(
     pipeline: FaceEmotionPipeline, kind: str, target: int | Path, frames: int
 ) -> int:
     """Measure worst-case throughput: every frame is fully analysed."""
+    if kind == "image":
+        raise SystemExit("Benchmark requires a webcam or video source, not an image.")
     cap = open_capture(target)
     processed = 0
     start = time.perf_counter()
@@ -397,7 +399,8 @@ def main(argv: list[str] | None = None) -> int:
         target = args.camera
 
     if args.benchmark_frames:
-        assert target is not None
+        if target is None:
+            raise SystemExit("Benchmark requires a webcam or video source.")
         benchmark_pipeline = FaceEmotionPipeline(
             pipeline.engine,
             detector=pipeline.detector,
@@ -408,18 +411,22 @@ def main(argv: list[str] | None = None) -> int:
         return run_benchmark(benchmark_pipeline, kind, target, args.benchmark_frames)
 
     if args.serve:
-        assert target is not None
+        if target is None:
+            raise SystemExit("--serve requires a webcam or video source.")
         return run_serve(pipeline, kind, target, args.host, args.serve)
 
     try:
         if kind == "webcam":
-            assert isinstance(target, int)
+            if not isinstance(target, int):
+                raise SystemExit("Internal error: webcam target is not an int.")
             run_webcam(pipeline, target, args.output, args.no_display)
         elif kind == "video":
-            assert isinstance(target, Path)
+            if not isinstance(target, Path):
+                raise SystemExit("Internal error: video target is not a Path.")
             run_video(pipeline, target, args.output, args.no_display)
         else:
-            assert isinstance(target, Path)
+            if not isinstance(target, Path):
+                raise SystemExit("Internal error: image target is not a Path.")
             run_image(pipeline, target, args.output, args.no_display)
     except SystemExit:
         raise
