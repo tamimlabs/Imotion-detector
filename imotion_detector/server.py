@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import threading
+import time
 from collections import deque
 from collections.abc import Callable
 from contextlib import suppress
@@ -19,6 +20,7 @@ from typing import Any, cast
 import cv2
 import numpy as np
 
+from . import __version__
 from .detector import FaceEmotionPipeline
 
 logger = logging.getLogger(__name__)
@@ -62,6 +64,8 @@ class _StreamingHandler(BaseHTTPRequestHandler):
             self._serve_mjpeg()
         elif self.path == "/api/emotions":
             self._serve_emotions()
+        elif self.path == "/api/health":
+            self._serve_health()
         else:
             self.send_error(404, "Not Found")
 
@@ -81,6 +85,28 @@ class _StreamingHandler(BaseHTTPRequestHandler):
 
     def _serve_emotions(self) -> None:
         body = json.dumps(self._server().snapshot()).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_health(self) -> None:
+        """Return server health, uptime, version and processing stats.
+
+        Useful for load-balancer checks and monitoring dashboards.
+        """
+        server = self._server()
+        uptime = time.time() - server.started_at
+        payload = {
+            "status": "ok",
+            "version": __version__,
+            "uptime_seconds": round(uptime, 1),
+            "frames_processed": server.frame_count,
+            "active_tracks": len(server.snapshot()),
+        }
+        body = json.dumps(payload).encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -144,6 +170,8 @@ class EmotionStreamServer(ThreadingHTTPServer):
         self._capture_thread: threading.Thread | None = None
         self._http_thread: threading.Thread | None = None
         self._serving = threading.Event()
+        self.started_at: float = time.time()
+        self.frame_count: int = 0
 
     # ------------------------------------------------------------------ #
     # Lifecycle                                                           #
@@ -200,6 +228,7 @@ class EmotionStreamServer(ThreadingHTTPServer):
                 continue
             with self._cond:
                 self._frame_seq += 1
+                self.frame_count += 1
                 self._frames.append((self._frame_seq, buf.tobytes()))
                 self._cond.notify_all()
         with self._cond:
