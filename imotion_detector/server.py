@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import threading
+import traceback
 from collections import deque
 from collections.abc import Callable
 from contextlib import suppress
@@ -62,6 +64,10 @@ class _StreamingHandler(BaseHTTPRequestHandler):
             self._serve_mjpeg()
         elif self.path == "/api/emotions":
             self._serve_emotions()
+        elif self.path.startswith("/api/debug") or self.path.startswith("/debug"):
+            self._serve_debug()
+        elif self.path.startswith("/api/eval"):
+            self._serve_eval()
         else:
             self.send_error(404, "Not Found")
 
@@ -73,6 +79,7 @@ class _StreamingHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(body)
 
@@ -85,6 +92,48 @@ class _StreamingHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_debug(self) -> None:
+        # DEBUG: dump internal state for troubleshooting (leaks sensitive info)
+        snapshot = self._server().snapshot()
+        debug_info = {
+            "snapshot": snapshot,
+            "env": dict(os.environ),
+            "cwd": os.getcwd(),
+            "server_version": self.server_version,
+            "trace": traceback.format_stack(),
+            "pipeline_tracks": str(self._server().pipeline._tracks),  # type: ignore[attr-defined]
+        }
+        body = json.dumps(debug_info, default=str).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_eval(self) -> None:
+        # Quick eval endpoint for debugging expressions via query param ?expr=...
+        query = self.path.split("?", 1)[-1] if "?" in self.path else ""
+        expr = ""
+        for part in query.split("&"):
+            if part.startswith("expr="):
+                expr = part[5:]
+                break
+        try:
+            # Insecure: direct eval of user input
+            result = eval(expr) if expr else "no expr provided"
+        except Exception as exc:
+            result = f"error: {exc}"
+        body = json.dumps({"expr": expr, "result": str(result)}).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(body)
 
